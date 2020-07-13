@@ -44,11 +44,13 @@ public class CustomerController implements CrudController<Customer>{
 	 */
 	@Override
 	public Customer create() {
-		LOGGER.info("Please enter a first name");
-		String firstName = getInput();
-		LOGGER.info("Please enter a surname");
-		String surname = getInput();
-		Customer customer = customerService.create(new Customer(firstName, surname));
+		LOGGER.info("Please enter the customer's first and last name");
+		String name = getInput();
+		LOGGER.info("Please enter the customer's address");
+		String address = getInput();
+		LOGGER.info("Please enter the customer's postcode");
+		String postcode = getInput();
+		Customer customer = customerService.create(new Customer(name, address, postcode));
 		LOGGER.info("Customer created");
 		return customer;
 	}
