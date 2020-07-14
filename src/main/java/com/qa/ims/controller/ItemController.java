@@ -41,6 +41,10 @@ public static final Logger LOGGER = Logger.getLogger(ItemController.class);
 	public Items update() {
 		LOGGER.info("Please enter the id of the item that you would like to update");
 		Long id = Utils.getLong();
+		
+		// clear buffer
+		Utils.getInput();
+		
 		LOGGER.info("Please enter the product name");
 		String product = Utils.getInput();
 		LOGGER.info("Please enter the price of the product");
