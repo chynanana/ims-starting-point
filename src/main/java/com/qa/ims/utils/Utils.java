@@ -20,5 +20,8 @@ public class Utils {
 	public static int getInt() {
 		return SCANNER.nextInt();
 	}
+	public static Long getLong() {
+		return SCANNER.nextLong();
+	}
 
 }

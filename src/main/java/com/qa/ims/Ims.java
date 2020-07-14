@@ -17,7 +17,9 @@ import com.qa.ims.controller.ItemController;
 import com.qa.ims.persistence.dao.CustomerDaoMysql;
 import com.qa.ims.persistence.domain.Domain;
 import com.qa.ims.services.CustomerServices;
+import com.qa.ims.services.ItemServices;
 import com.qa.ims.utils.Utils;
+import com.qa.ims.persistence.dao.ItemsDao;
 
 public class Ims {
 
@@ -48,7 +50,7 @@ public class Ims {
 			break;
 		case ITEM:
 			ItemController itemController = new ItemController(
-					new CustomerServices(new ItemsDao(username, password)));
+					new ItemServices(new ItemsDao(username, password)));
 			doAction(itemController, action);
 			break;
 		case ORDER:

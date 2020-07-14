@@ -3,9 +3,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Items;
 import com.qa.ims.services.CrudServices;
+import com.qa.ims.services.ItemServices;
 import com.qa.ims.utils.Utils;
 
 public class ItemController implements CrudController<Items> {
@@ -17,6 +17,7 @@ public static final Logger LOGGER = Logger.getLogger(ItemController.class);
 		this.itemService = itemService;
 	}
 	
+
 	@Override
 	public List<Items> readAll() {
 		List<Items> items = itemService.readAll();
@@ -39,7 +40,7 @@ public static final Logger LOGGER = Logger.getLogger(ItemController.class);
 	@Override
 	public Items update() {
 		LOGGER.info("Please enter the id of the item that you would like to update");
-		int id = Utils.getInt();
+		Long id = Utils.getLong();
 		LOGGER.info("Please enter the product name");
 		String product = Utils.getInput();
 		LOGGER.info("Please enter the price of the product");
@@ -49,7 +50,12 @@ public static final Logger LOGGER = Logger.getLogger(ItemController.class);
 		return item;
 	}
 
-	
+	@Override
+	public void delete() {
+		LOGGER.info("Please enter the id of the item that you would like to remove");
+		Long id = Utils.getLong();
+		itemService.delete(id);
+	}
 	}
 	
 	
