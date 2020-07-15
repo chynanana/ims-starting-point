@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 
 import org.apache.log4j.Logger;
 
+import com.qa.ims.persistence.domain.BasketItem;
 import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Items;
 import com.qa.ims.persistence.domain.Order;
@@ -41,20 +42,44 @@ public class OrderDao implements Dao<Order> {
 	}
 	
 	Order OrderFromResultSet(ResultSet resultSet) throws SQLException, ParseException {
-		SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+		SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd"); 
 		
 		Long order_id = resultSet.getLong("Order_ID");
-		Customer customer = this.custDao.readCustomer(resultSet.getLong("Customer_ID"));
+		Customer customer = this.custDao.readCustomer(resultSet.getLong("fk_Customer_ID"));
 		Date placed = dateFmt.parse(resultSet.getString("Placed"));
 		
 		return new Order(order_id, customer, placed);
+	}
+	
+	public void EmptyBasketDB(Long order_id) {
+		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
+				Statement statement = connection.createStatement();) {
+			statement.executeUpdate("DELETE FROM basket WHERE fk_Order_ID = " + order_id);
+		} catch (Exception e) {
+			LOGGER.debug(e.getStackTrace());
+			LOGGER.error(e.getMessage());
+		}
+	}
+	
+	public void AddBasketItemToDB(Long order_id, BasketItem b_item) {
+		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
+				Statement statement = connection.createStatement();) {
+			statement.executeUpdate("INSERT INTO Basket(fk_Order_ID, fk_Item_ID, Quantity) "
+						+ "VALUES (" + order_id + ", " + b_item.getItemId() + ", " + b_item.getQuantity() + ");");
+		} catch (Exception e) {
+			LOGGER.debug(e.getStackTrace());
+			LOGGER.error(e.getMessage());
+		}
 	}
 	
 	@Override
 	public List<Order> readAll() {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM Orders");) {
+				ResultSet resultSet = statement.executeQuery("SELECT Orders.Order_ID, Customers.Name, Orders.Placed, Orders.fk_Customer_ID \r\n" + 
+						"FROM Orders\r\n" + 
+						"INNER JOIN Customers ON Orders.fk_Customer_ID=Customers.Customer_ID" );) 
+		{
 			ArrayList<Order> order = new ArrayList<>();
 			while (resultSet.next()) {
 				order.add(OrderFromResultSet(resultSet));
@@ -111,11 +136,20 @@ public class OrderDao implements Dao<Order> {
 		return null;
 	}
 	
-	
 	@Override
 	public Order update(Order order) {
-		//stub no need to update order
-		return null;
+		// Update the basket-list ... we need to delete all items from the basket
+		// then add them back in if it changes
+		LOGGER.debug("Emptying basket...");
+		EmptyBasketDB(order.getOrder_id());
+		
+		// Add items back in
+		for(BasketItem b_item : order.getOrderList()) {
+			LOGGER.debug("Adding item ID " + b_item.getItemId() + " with quantity " + b_item.getQuantity());
+			AddBasketItemToDB(order.getOrder_id(), b_item);
+		}
+		
+		return order;
 	}
 	
 	@Override

@@ -25,6 +25,12 @@ public class Order {
 		
 		// getters and setters
 	}
+	
+	public Order(Long cust_id, Date placed) {
+		this.customer = new Customer(cust_id);
+		this.placed = placed;
+	}
+	
 	public Long getOrder_id() {
 		return order_id;
 	}
@@ -54,11 +60,15 @@ public class Order {
 		items.remove(bitem);
 	}
 	
+	public ArrayList<BasketItem> getOrderList() {
+		return items;
+	}
+	
 	public float total() {
 		float runningTotal = 0.0;
 		
 		for(int i = 0; i < items.size(); i++) {
-			runningTotal += items.get(i).calcPrice();
+			//runningTotal += items.get(i).calcPrice();
 		}
 		
 		return runningTotal;

@@ -2,6 +2,8 @@ package com.qa.ims.utils;
 
 import java.util.Scanner;
 
+import com.qa.ims.persistence.domain.Customer;
+
 public class Utils {
 
 	public static final String MYSQL_URL = "localhost:3306";
@@ -23,5 +25,8 @@ public class Utils {
 	public static Long getLong() {
 		return SCANNER.nextLong();
 	}
-
+	//public static Customer getDate() {
+		//return SCANNER.nextDouble();
+	
+	
 }

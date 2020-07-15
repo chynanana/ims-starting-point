@@ -3,7 +3,9 @@ package com.qa.ims.services;
 import java.util.List;
 
 import com.qa.ims.controller.CrudController;
+import com.qa.ims.persistence.dao.CustomerDaoMysql;
 import com.qa.ims.persistence.dao.Dao;
+import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.persistence.dao.OrderDao;
 
@@ -15,7 +17,6 @@ public class OrderServices implements CrudServices<Order> {
 	
 
 	private Dao<Order> orderDao;
-	
 	
 	public List<Order> readAll() {
 		return orderDao.readAll();
