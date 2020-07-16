@@ -16,23 +16,27 @@ public class CustomerTest {
 	
 	@Before
 	public void setUp() {
-		customer = new Customer(1L, "Chris", "Perrins");
-		other = new Customer(1L, "Chris", "Perrins");
+		customer = new Customer(1L, "Harry Bose", "300 Sweet St","EZ33 9GF");
+		other = new Customer(1L, "Harry Bose", "300 Sweet St","EZ33 9GF");
 	}
 	
 	@Test
 	public void settersTest() {
 		assertNotNull(customer.getId());
-		assertNotNull(customer.getFirstName());
-		assertNotNull(customer.getSurname());
+		assertNotNull(customer.getName());
+		assertNotNull(customer.getAddress());
+		assertNotNull(customer.getPostcode());
 		
 		customer.setId(null);
 		assertNull(customer.getId());
-		customer.setFirstName(null);
-		assertNull(customer.getFirstName());
-		customer.setSurname(null);
-		assertNull(customer.getSurname());
-		
+		customer.setName(null);
+		assertNull(customer.getName());
+		customer.setAddress(null);
+		assertNull(customer.getAddress());
+		customer.setAddress(null);
+		assertNull(customer.getAddress());
+		customer.setPostcode(null);
+		assertNull(customer.getPostcode());
 	}
 	
 	@Test
@@ -48,8 +52,9 @@ public class CustomerTest {
 	@Test
 	public void createCustomerWithId() {
 		assertEquals(1L, customer.getId(), 0);
-		assertEquals("Chris", customer.getFirstName());
-		assertEquals("Perrins", customer.getSurname());
+		assertEquals("Harry Bose", customer.getName());
+		assertEquals("300 Sweet St",customer.getAddress());
+		assertEquals("EZ33 9GF",customer.getPostcode());
 	}
 	
 	@Test
@@ -64,20 +69,20 @@ public class CustomerTest {
 	
 	@Test
 	public void customerNameNullButOtherNameNotNull() {
-		customer.setFirstName(null);
+		customer.setName(null);
 		assertFalse(customer.equals(other));
 	}
 	
 	@Test
 	public void customerNamesNotEqual() {
-		other.setFirstName("rhys");
+		other.setName("Coo King");
 		assertFalse(customer.equals(other));
 	}
 	
 	@Test
 	public void checkEqualityBetweenDifferentObjectsNullName() {
-		customer.setFirstName(null);
-		other.setFirstName(null);
+		customer.setName(null);
+		other.setName(null);
 		assertTrue(customer.equals(other));
 	}
 	
@@ -101,30 +106,31 @@ public class CustomerTest {
 	}
 	
 	@Test
-	public void nullSurname() {
-		customer.setSurname(null);
+	public void nullName() {
+		customer.setName(null);
 		assertFalse(customer.equals(other));
 	}
 	
 	@Test
 	public void nullSurnameOnBoth() {
-		customer.setSurname(null);
-		other.setSurname(null);
+		customer.setName(null);
+		other.setName(null);
 		assertTrue(customer.equals(other));
 	}
 	
 	@Test
-	public void otherSurnameDifferent() {
-		other.setSurname("thompson");
+	public void otherNameDifferent() {
+		other.setName("Oscar Pollow");
 		assertFalse(customer.equals(other));
 	}
 	
 	@Test
 	public void constructorWithoutId() {
-		Customer customer = new Customer("Chris", "Perrins");
+		Customer customer = new Customer("Bart Simpson", "8 Myshorts Ave", "BS23 8SB");
 		assertNull(customer.getId());
-		assertNotNull(customer.getFirstName());
-		assertNotNull(customer.getSurname());
+		assertNotNull(customer.getName());
+		assertNotNull(customer.getAddress());
+		assertNotNull(customer.getPostcode());
 	}
 	
 	@Test
@@ -133,14 +139,14 @@ public class CustomerTest {
 	}
 	@Test
 	public void hashCodeTestWithNull() {
-		Customer customer = new Customer(null, null);
-		Customer other = new Customer(null, null);
+		Customer customer = new Customer(0L, "", "", "");
+		Customer other = new Customer(0L, "", "", "");
 		assertEquals(customer.hashCode(), other.hashCode());
 	}
 	
 	@Test
 	public void toStringTest() {
-		String toString = "id:1 first name:Chris surname:Perrins";
+		String toString = "id:1 name:Harry Bose address: 300 Sweet St postcode: EZ33 9GF";
 		assertEquals(toString, customer.toString());
 	}
 }
