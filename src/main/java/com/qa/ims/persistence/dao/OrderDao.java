@@ -48,7 +48,9 @@ public class OrderDao implements Dao<Order> {
 		Customer customer = this.custDao.readCustomer(resultSet.getLong("fk_Customer_ID"));
 		Date placed = dateFmt.parse(resultSet.getString("Placed"));
 		
-		return new Order(order_id, customer, placed);
+		Order order = new Order(order_id, customer, placed);
+		BasketFillOrder(order);
+		return order;
 	}
 	
 	public void EmptyBasketDB(Long order_id) {
@@ -71,6 +73,62 @@ public class OrderDao implements Dao<Order> {
 			LOGGER.error(e.getMessage());
 		}
 	}
+	
+	public float BasketTotal(Long order_id) {
+		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
+				Statement statement = connection.createStatement();){
+			ResultSet resultSet = statement.executeQuery("SELECT Basket.fk_Order_ID,SUM(Items.Price * Basket.Quantity) AS TotalPrice\r\n" + 
+					"FROM Items \r\n" + 
+					"INNER JOIN Basket ON Items.Item_ID=Basket.fk_Item_ID\r\n" + 
+					"WHERE Basket.fk_Order_ID = " + 
+					order_id +";" );
+			return resultSet.getFloat("TotalPrice");
+		} catch (Exception e) {
+			LOGGER.debug(e.getStackTrace());
+			LOGGER.error(e.getMessage());
+		}
+		
+		return 0;
+	}
+
+	public void BasketPrintList(Long order_id) {
+		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
+				Statement statement = connection.createStatement();){
+			ResultSet resultSet = statement.executeQuery("SELECT Basket.fk_Order_ID, Items.Product,Items.Price, Basket.Quantity, Items.Price * Basket.Quantity AS TotalPrice\r\n" + 
+					"FROM Items \r\n" + 
+					"INNER JOIN Basket ON Items.Item_ID=Basket.fk_Item_ID\r\n" + 
+					"WHERE Basket.fk_Order_ID =" + 
+					order_id + ";");
+			
+			while (resultSet.next()) { //finds next in result set and returns true if there is result to be read 
+				LOGGER.debug("Item ID: " + resultSet.getInt("fk_Item_ID") + " Quantity: " + resultSet.getInt("Quantity") + " Price: " + resultSet.getFloat("Price"));
+			}
+		} catch (Exception e) {
+			LOGGER.debug(e.getStackTrace());
+			LOGGER.error(e.getMessage());
+		}
+	}
+
+	public void BasketFillOrder(Order order) {
+		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
+				Statement statement = connection.createStatement();){
+			ResultSet resultSet = statement.executeQuery("SELECT Basket.fk_Order_ID, Basket.fk_Item_ID, Items.Product,Items.Price, Basket.Quantity, Items.Price * Basket.Quantity AS TotalPrice\r\n" + 
+					"FROM Items \r\n" + 
+					"INNER JOIN Basket ON Items.Item_ID=Basket.fk_Item_ID\r\n" + 
+					"WHERE Basket.fk_Order_ID =" + 
+					order.getOrder_id() + ";");
+			
+			while (resultSet.next()) { //finds next in result set and returns true if there is result to be read 
+				BasketItem b_item = new BasketItem(resultSet.getInt("fk_Item_ID"), resultSet.getInt("Quantity"));
+				order.addItem(b_item);
+			}
+		} catch (Exception e) {
+			LOGGER.debug(e.getStackTrace());
+			LOGGER.error(e.getMessage());
+		}
+	}
+	
+	
 	
 	@Override
 	public List<Order> readAll() {
@@ -148,6 +206,8 @@ public class OrderDao implements Dao<Order> {
 			LOGGER.debug("Adding item ID " + b_item.getItemId() + " with quantity " + b_item.getQuantity());
 			AddBasketItemToDB(order.getOrder_id(), b_item);
 		}
+		
+		LOGGER.debug("The total for you order is now: " + BasketTotal(order.getOrder_id()));
 		
 		return order;
 	}

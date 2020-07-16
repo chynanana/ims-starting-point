@@ -33,9 +33,12 @@ public class OrderController implements CrudController<Order> {
 	@Override
 	public List<Order> readAll() {
 		List<Order> order = orderService.readAll();
+		
 		for(Order x: order) {
 			LOGGER.info(x.toString());
+			LOGGER.info(x.getItemsAsString());
 		}
+		
 		return order;
 	}
 	@Override

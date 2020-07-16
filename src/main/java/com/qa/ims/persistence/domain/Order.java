@@ -81,6 +81,17 @@ public class Order {
 	public String toString() {
 		return "Order_ID: " + order_id + " Customer_ID: " + customer + " Placed: " + placed;
 	}
+	
+	public String getItemsAsString() {
+		String itemString = "Items in this order:\r\n";
+		
+		for(BasketItem b_item : items) {
+			itemString += "Item ID: " + b_item.getItemId() + " Quantity: " + b_item.getQuantity() + "\r\n";
+		}
+		
+		return itemString;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
