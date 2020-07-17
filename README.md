@@ -1,19 +1,49 @@
-Coverage: 34%
+Coverage: 43.7%
 # Project Title
-
+This project is an 
 One Paragraph of project description goes here
 
 ## Getting Started
+CREATE TABLE Customers(
+Customer_ID INT PRIMARY KEY AUTO_INCREMENT,
+Name VARCHAR(50),
+Address VARCHAR(50),
+Postcode VARCHAR(50),
+Date DATETIME
+);
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+CREATE TABLE Orders(
+Order_ID INT PRIMARY KEY AUTO_INCREMENT,
+fk_Customer_ID  INT NOT NULL,
+Placed DATE NOT NULL,
+  FOREIGN KEY (fk_Customer_ID) REFERENCES Customers(Customer_ID)
+  );
+
+
+CREATE TABLE Items(
+Item_ID INT PRIMARY KEY AUTO_INCREMENT,
+Product VARCHAR(50),
+Price DECIMAL(22, 2)
+);
+
+CREATE TABLE Basket(
+Entry INT PRIMARY KEY AUTO_INCREMENT,
+fk_Order_ID INT,
+fk_Item_ID  INT NOT NULL,
+Quantity INT NOT NULL,
+FOREIGN KEY(fk_Order_ID) REFERENCES Orders(Order_ID),
+FOREIGN KEY(fk_Item_ID) REFERENCES Items(Item_ID)
+);
+
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Eclipse
+MySQL 
+Git bash 
 
-```
-Give examples
-```
+
+
 
 ### Installing
 
@@ -35,34 +65,17 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## Running the tests
 
-Explain how to run the automated tests for this system. Break down into which tests and what they do
+Tests are ran using JUnit  and you run them by pressing ctrl + SHIFT + F11
 
 ### Unit Tests 
 
-Explain what these tests test, why and how to run them
+Tests are ran using JUnit  and you run them by pressing ctrl + SHIFT + F11
+Tests are run in order to check that my database is functioning correctly without affecting the data stored in my table 
 
-```
-Give an example
-```
-
-### Integration Tests 
-Explain what these tests test, why and how to run them
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+I would need to create a jar file and change the SQL information like username and password 
 
 ## Built With
 
@@ -85,7 +98,4 @@ This project is licensed under the MIT license - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat-tip to anyone whose code was used
-* Shout-out to anyone who helped you out
-* Inspiration
-* etc.
+Vinesh Ghela
