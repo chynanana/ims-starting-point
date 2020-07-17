@@ -17,20 +17,20 @@ public enum Domain {
 	
 	private Domain(String description) {
 		this.description = description;
-	}
+	//}
 	
-	public String getDescription() {
-		return this.name() + ": " +this.description;
-	}
+	//public String getDescription() {
+//		return this.name() + ": " +this.description;
+//	}
 	
-	public static void printDomains() {
-		for (Domain domain : Domain.values()) {
-			LOGGER.info(domain.getDescription());
-		}
-	}
+//	public static void printDomains() {
+//		for (Domain domain : Domain.values()) {
+//			LOGGER.info(domain.getDescription());
+	//	}
+//	}
 	
-	public static Domain getDomain() {
-		Domain domain;
+//	public static Domain getDomain() {
+//		Domain domain;
 		while (true) {
 			try {
 				domain = Domain.valueOf(Utils.getInput().toUpperCase());

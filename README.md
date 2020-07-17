@@ -1,7 +1,8 @@
 Coverage: 43.7%
 # Project Title
-This project is an 
-One Paragraph of project description goes here
+This project is an Inventory management system that I have created to allow a user to do a collection of things. The system consists of four different tables; Customers, Basket, Orders and Items. A customer will be able to Create, Delete and Update objects in each of these tables.
+I will be creating a database using SQL which will work with code that I write in Java using the Eclipse IDE. 
+ 
 
 ## Getting Started
 CREATE TABLE Customers(
