@@ -1,22 +1,21 @@
 package com.qa.ims.persistence.domain;
-import com.qa.ims.persistence.domain.Items;
 
 public class BasketItem {
 	
-	private Items item;
+	private int item_id;
 	private int quantity;
 	
-	public BasketItem (Items item, int quantity) {
-		this.item = item;
+	public BasketItem (int item_id, int quantity) {
+		this.item_id = item_id;
 		this.quantity = quantity;
 	}
 
-	public Items getItem() {
-		return item;
+	public int getItemId() {
+		return item_id;
 	}
 
-	public void setItem(Items item) {
-		this.item = item;
+	public void setItemId(int id) {
+		this.item_id = id;
 	}
 
 	public int getQuantity() {
@@ -25,10 +24,6 @@ public class BasketItem {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
-	}
-	
-	public float calcPrice() {
-		return this.item.getPrice() * this.quantity;
 	}
 	
 }

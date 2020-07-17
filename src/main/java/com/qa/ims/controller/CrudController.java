@@ -1,6 +1,9 @@
 package com.qa.ims.controller;
 
+import java.sql.ResultSet;
 import java.util.List;
+
+import com.qa.ims.persistence.domain.Order;
 
 /**
  * Create, Read, Update and Delete controller.
@@ -15,5 +18,7 @@ public interface CrudController<T> {
     T update();
      
     void delete();
+
+	//Order create(ResultSet resultSet);
 
 }

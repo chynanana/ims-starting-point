@@ -62,11 +62,13 @@ public class CustomerController implements CrudController<Customer>{
 	public Customer update() {
 		LOGGER.info("Please enter the id of the customer you would like to update");
 		Long id = Long.valueOf(getInput());
-		LOGGER.info("Please enter a first name");
-		String firstName = getInput();
-		LOGGER.info("Please enter a surname");
-		String surname = getInput();
-		Customer customer = customerService.update(new Customer(id, firstName, surname));
+		LOGGER.info("Please enter your first and last name ");
+		String name = getInput();
+		LOGGER.info("Please enter your address");
+		String address = getInput();
+		LOGGER.info("Please enter your postcode");
+		String postcode = getInput();
+		Customer customer = customerService.update(new Customer(id, name, address, postcode));
 		LOGGER.info("Customer Updated");
 		return customer;
 	}

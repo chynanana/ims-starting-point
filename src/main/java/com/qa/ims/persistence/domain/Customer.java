@@ -22,6 +22,16 @@ public class Customer {
 		this.address = address;
 		this.postcode = postcode;
 	}
+	public Customer(Long id, String name, String address) {
+		this.id = id;
+		this.name = name;
+		this.address = address;
+	}
+	
+	public Customer(long id) {
+		// If just ID supplied (e.g. when order created)
+		this.id = id;
+	}
 
 	public Long getId() {
 		return id;

@@ -25,6 +25,12 @@ public class Order {
 		
 		// getters and setters
 	}
+	
+	public Order(Long cust_id, Date placed) {
+		this.customer = new Customer(cust_id);
+		this.placed = placed;
+	}
+	
 	public Long getOrder_id() {
 		return order_id;
 	}
@@ -54,11 +60,15 @@ public class Order {
 		items.remove(bitem);
 	}
 	
+	public ArrayList<BasketItem> getOrderList() {
+		return items;
+	}
+	
 	public float total() {
 		float runningTotal = 0.0;
 		
 		for(int i = 0; i < items.size(); i++) {
-			runningTotal += items.get(i).calcPrice();
+			//runningTotal += items.get(i).calcPrice();
 		}
 		
 		return runningTotal;
@@ -71,6 +81,17 @@ public class Order {
 	public String toString() {
 		return "Order_ID: " + order_id + " Customer_ID: " + customer + " Placed: " + placed;
 	}
+	
+	public String getItemsAsString() {
+		String itemString = "Items in this order:\r\n";
+		
+		for(BasketItem b_item : items) {
+			itemString += "Item ID: " + b_item.getItemId() + " Quantity: " + b_item.getQuantity() + "\r\n";
+		}
+		
+		return itemString;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
